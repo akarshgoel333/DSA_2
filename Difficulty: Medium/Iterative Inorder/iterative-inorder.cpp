@@ -16,31 +16,26 @@ class Solution {
   public:
     vector<int> inOrder(Node* root) {
         // code here
-        stack<int>vis;
-        stack<Node*>st;
-        st.push(root);
-        vis.push(0);
         vector<int>ans;
-        Node* temp;
-        int done;
-        while(!st.empty()){
-            temp = st.top();
-            st.pop();
-            done = vis.top();
-            vis.pop();
-            if(done == 1){
-                ans.push_back(temp->data);
+        Node* curr;
+        while(root){
+            if(!root->left){
+                ans.push_back(root->data);
+                root = root->right;
             }
             else{
-                if(temp->right){
-                    st.push(temp->right);
-                    vis.push(0);
+                curr = root->left;
+                while(curr->right && curr->right!=root){
+                    curr = curr->right;
                 }
-                st.push(temp);
-                vis.push(1);
-                if(temp->left){
-                    st.push(temp->left);
-                    vis.push(0);
+                if(!curr->right){
+                    curr->right = root;
+                    root = root->left;
+                }
+                else{
+                    curr->right = nullptr;
+                    ans.push_back(root->data);
+                    root = root->right;
                 }
             }
         }

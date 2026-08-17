@@ -15,16 +15,28 @@ class Solution {
   public:
     vector<int> preOrder(Node* root) {
         // code here
-        stack<Node*> st;
         vector<int>ans;
-        st.push(root);
-        Node* temp;
-        while(!st.empty()){
-            temp = st.top();
-            st.pop();
-            ans.push_back(temp->data);
-            if(temp->right) st.push(temp->right);
-            if(temp->left) st.push(temp->left);
+        Node* curr;
+        while(root){
+            if(!root->left){
+                ans.push_back(root->data);
+                root = root->right;
+            }
+            else{
+                curr = root->left;
+                while(curr->right && curr->right!=root){
+                    curr = curr->right;
+                }
+                if(!curr->right){
+                    ans.push_back(root->data);
+                    curr->right = root;
+                    root = root->left;
+                }
+                else{
+                    curr->right = NULL;
+                    root = root->right;
+                }
+            }
         }
         return ans;
     }
